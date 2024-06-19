@@ -41,3 +41,4 @@ export const TaskSchema = new Schema({
 }, {timestamps : true})
 
 const Task = mongoose.model<TasksInterface>('Task', TaskSchema)
+export default Task
