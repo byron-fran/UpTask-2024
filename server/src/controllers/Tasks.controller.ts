@@ -36,9 +36,6 @@ export class TaskController {
         try {
             const task = await Task.findById(req.task.id)
 
-            if (task.project.toString() !== req.project.id) {
-                return res.status(400).json({ errors: "Task no valid" })
-            }
             return res.status(200).json(task);
         } catch (error: unknown) {
             console.log(error)
@@ -51,9 +48,7 @@ export class TaskController {
         try {
             const task = await Task.findById(req.task.id)
 
-            if (task.project.toString() !== req.project.id) {
-                return res.status(400).json({ errors: "Task no valid" })
-            }
+        
             task.name = req.body.name
             task.description = req.body.description
             await task.save()

@@ -48,11 +48,17 @@ export class ProjectController {
         const { id } = req.params
         try {
 
-            const project = await Project.findByIdAndUpdate(id, req.body)
+            const project = await Project.findById(id)
 
             if (!project) {
                 return res.status(404).json({ errors: "project not found" })
-            }
+            };
+            
+            project.clientName = req.body.clientName;
+            project.description = req.body.description;
+            project.projectName = req.body.projectName;
+            await project.save();
+
             return res.status(200).json(project);
 
         } catch (error: unknown) {

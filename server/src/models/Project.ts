@@ -2,7 +2,7 @@ import mongoose, {Schema, Document, PopulatedDoc, Types} from "mongoose";
 import { TasksInterface } from "./Tasks";
 
 export interface ProjectInterface extends Document  {
-    prjectName : string,
+    projectName : string,
     clientName : string,
     description : string,
     tasks : PopulatedDoc<TasksInterface & Document>[]
