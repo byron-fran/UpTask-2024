@@ -33,6 +33,7 @@ export async function getAllProjects() {
 
 export async function getProjectById(id: string): Promise<Project | undefined> {
     try {
+        
         const { data } = await api.get<Project>(`/projects/${id}`);
 
         return data
@@ -62,11 +63,10 @@ export async function updateProject({ id, formData }: Props): Promise<Project | 
 
     }
 };
-export async function deleteProjectById(id : string) {
+export async function deleteProjectById(id: string) {
     try {
-        
         await api.delete<Project>(`/projects/${id}`);
-        return 
+        return
 
     } catch (error: unknown) {
         if (isAxiosError(error)) {
