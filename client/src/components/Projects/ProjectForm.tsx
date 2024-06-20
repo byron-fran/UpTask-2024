@@ -1,19 +1,11 @@
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 import ErrorMessage from "../ErrorMessage"
 import { FC } from "react";
+import { ProjectFormData } from "types";
 
 interface ProjectProps {
-
-    register : UseFormRegister<{
-        projectName: string;
-        clientName: string;
-        description: string;
-    }> 
-    errors : FieldErrors<{
-        projectName: string;
-        clientName: string;
-        description: string;
-    }>
+    register : UseFormRegister<ProjectFormData> 
+    errors : FieldErrors<ProjectFormData>
 }
 
 const ProjectForm : FC<ProjectProps> = ({errors, register}) => {
