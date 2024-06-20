@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import AddTaskModal from '@/components/tasks/AddTaskModal';
 import TaskListView from '../tasks/TaskListView';
 import EditTaskData from '@/components/tasks/EditTaskData';
+import TaskModalDetails from '@/components/tasks/DetailTaskModal';
 
 const DetailViewProject = () => {
     const { id } = useParams();
@@ -36,6 +37,7 @@ const DetailViewProject = () => {
                 <AddTaskModal/>
                 <TaskListView tasks={data.tasks}/>
                 <EditTaskData/>
+                <TaskModalDetails/>
             </>
         )
     }

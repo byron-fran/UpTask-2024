@@ -26,7 +26,7 @@ export const createTask = async ({ formData, id }: Pick<taskProps, 'formData' | 
 export const getTaskById = async ({ projectId, id }: Pick<taskProps, 'projectId' | 'id'>) => {
 
     try {
-        const { data } = await api.get(`/projects/${projectId}/tasks/${id}`)
+        const { data } = await api.get<task>(`/projects/${projectId}/tasks/${id}`)
 
         return data
     }
@@ -48,6 +48,19 @@ export const updateTaskById = async ({ formData, id, projectId }: Pick<taskProps
         return data
 
     } catch (error: unknown) {
+        if (isAxiosError(error)) {
+            console.log(error.response)
+            throw new Error(error.response?.data.error)
+        }
+    }
+}
+
+export const deleteTaskById = async ({id, projectId} : Pick<taskProps, 'id' |'projectId'>) => {
+    try {
+        const url = `/projects/${projectId}/tasks/${id}`;
+        await api.delete(url)
+
+    } catch (error : unknown) {
         if (isAxiosError(error)) {
             console.log(error.response)
             throw new Error(error.response?.data.error)
