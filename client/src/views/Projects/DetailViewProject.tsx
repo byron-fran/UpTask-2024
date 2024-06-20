@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import AddTaskModal from '@/components/tasks/AddTaskModal';
 import TaskListView from '../tasks/TaskListView';
+import EditTaskData from '@/components/tasks/EditTaskData';
 
 const DetailViewProject = () => {
     const { id } = useParams();
@@ -34,6 +35,7 @@ const DetailViewProject = () => {
                 </nav>
                 <AddTaskModal/>
                 <TaskListView tasks={data.tasks}/>
+                <EditTaskData/>
             </>
         )
     }
