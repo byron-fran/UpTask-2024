@@ -61,4 +61,18 @@ export async function updateProject({ id, formData }: Props): Promise<Project | 
         }
 
     }
+};
+export async function deleteProjectById(id : string) {
+    try {
+        
+        await api.delete<Project>(`/projects/${id}`);
+        return 
+
+    } catch (error: unknown) {
+        if (isAxiosError(error)) {
+            console.log(error.response)
+            throw new Error(error.response?.data.error)
+        }
+
+    }
 }

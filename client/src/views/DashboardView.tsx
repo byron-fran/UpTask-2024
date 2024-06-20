@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom"
-import { useQuery } from "@tanstack/react-query"
-import { getAllProjects } from "@/api/ProjectApi"
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+import { deleteProjectById, getAllProjects } from "@/api/ProjectApi"
 import { Fragment } from 'react'
 import { EllipsisVerticalIcon } from '@heroicons/react/20/solid'
 import { Menu, MenuButton, MenuItem, MenuItems, Transition } from '@headlessui/react';
+import { toast } from "react-toastify"
 
 const DashboardView = () => {
 
@@ -12,7 +13,20 @@ const DashboardView = () => {
     queryFn: getAllProjects,
 
   })
+  const queryClient = useQueryClient();
 
+  const {mutate} = useMutation({
+    mutationFn : deleteProjectById,
+    onError : () => {
+      toast.error("error to delete")
+    },
+    onSuccess : () => {
+      toast.success("delete success")
+      queryClient.invalidateQueries({queryKey : ['projects']})
+
+    }
+  });
+  
   if (isLoading) return '..Loading'
 
   if (data) {
@@ -72,7 +86,7 @@ const DashboardView = () => {
                           <button
                             type='button'
                             className='block px-3 py-1 text-sm leading-6 text-red-500'
-                            onClick={() => { }}
+                            onClick={() => mutate(project._id)}
                           >
                             Eliminar Proyecto
                           </button>
