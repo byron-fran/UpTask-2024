@@ -1,11 +1,12 @@
 import { Fragment } from 'react';
 import { Dialog, Transition, TransitionChild, DialogPanel, DialogTitle } from '@headlessui/react';
-import { Navigate, useLocation, useNavigate, useParams  } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-import { getTaskById } from '@/api/TaskApi';
+import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useQuery , useMutation, useQueryClient} from '@tanstack/react-query';
+import { changeStatus, getTaskById } from '@/api/TaskApi';
 import { toast } from 'react-toastify';
 import { formatDate } from '@/utils/utils';
-
+import { statusTranslations } from '@/locals/locals';
+import { TaskStatus } from '@/types/index';
 export default function TaskModalDetails() {
 
     const location = useLocation();
@@ -13,25 +14,41 @@ export default function TaskModalDetails() {
     const taskId = params.get('taskView')!;
     const show = !!taskId
     const navigate = useNavigate();
-    const {id} = useParams()
-    const {data, isError} = useQuery({
-        queryKey : ['task', taskId],
-        queryFn : () => getTaskById({projectId: id!,id : taskId}),
-        enabled : !!taskId,
-        retry : false
-        
-    });
+    const { id } = useParams();
 
-    if(isError){
+    const { data, isError } = useQuery({
+        queryKey: ['task', taskId],
+        queryFn: () => getTaskById({ projectId: id!, id: taskId }),
+        enabled: !!taskId,
+        retry: false
+
+    });
+    const queryClient = useQueryClient()
+    const {mutate} = useMutation({
+        mutationFn : changeStatus,
+        onSuccess : () => {
+            toast.success('Update success'),
+            queryClient.invalidateQueries({queryKey : ['update_project', id]})
+            queryClient.invalidateQueries({queryKey :['task', taskId]})
+        },
+        onError : () => {
+            toast.error('something wrong')
+        }        
+    })
+    const hanleChangeStatus = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const status = e.target.value as TaskStatus
+        mutate({projectId : id!, id : taskId, status})
+    }
+    if (isError) {
         toast.error("task not found")
-        return <Navigate to={`/projects/${id}`}/>
+        return <Navigate to={`/projects/${id}`} />
     };
 
-  
-    if(data)  return (
+
+    if (data) return (
         <>
             <Transition appear show={show} as={Fragment}>
-                <Dialog as="div" className="relative z-10" onClose={() => navigate(location.pathname, {replace : true})}>
+                <Dialog as="div" className="relative z-10" onClose={() => navigate(location.pathname, { replace: true })}>
                     <TransitionChild
                         as={Fragment}
                         enter="ease-out duration-300"
@@ -66,6 +83,14 @@ export default function TaskModalDetails() {
                                     <p className='text-lg text-slate-500 mb-2'>{data.description}</p>
                                     <div className='my-5 space-y-3'>
                                         <label className='font-bold'>Estado Actual:</label>
+                                        <select
+                                            className='w-full bg-white p-3 border border-slate-300'
+                                            defaultValue={data.status}
+                                            onChange={hanleChangeStatus}>
+                                            {Object.entries(statusTranslations).map(([key, value]) => {
+                                                return <option key={key} value={key}>{value}</option>
+                                            })}
+                                        </select>
                                     </div>
                                 </DialogPanel>
                             </TransitionChild>

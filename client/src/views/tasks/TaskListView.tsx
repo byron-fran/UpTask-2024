@@ -1,6 +1,6 @@
 import TaskCard from '@/components/tasks/TaskCard'
 import { task } from '@/types/index'
-
+import { statusTranslations } from '@/locals/locals'
 
 type GroupedTasks = {
     [key: string]: task[]
@@ -18,13 +18,7 @@ interface Props {
     tasks: task[]
 }
 
-const statusTranslations: {[key: string] : string} = { 
-    pending : 'pending',
-    onHold : 'On wait',
-    inProgress : 'In progress',
-    underReview : 'In review',
-    completed : 'Completed'
-};
+
 
 const borderColorStatus : {[key : string] : string} = {
     pending : 'border-t-slate-500',

@@ -11,7 +11,7 @@ export const taskSchema = z.object({
     updatedAt : z.string()
 
 });
-
+export type TaskStatus = z.infer<typeof taskStatusSchema>
 export type task = z.infer<typeof taskSchema>;
 export type taskFormData = Pick<task, 'description' | 'name'>
 

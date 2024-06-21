@@ -21,7 +21,7 @@ export default function EditTaskModal({ data, taskId, projectId }: Props) {
             description: data.description
         }
     });
-    
+
     const navigate = useNavigate()
     const queryClient = useQueryClient();
 
@@ -29,7 +29,8 @@ export default function EditTaskModal({ data, taskId, projectId }: Props) {
         mutationFn: updateTaskById,
         onError: () => { },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['update_project', projectId] })
+            queryClient.invalidateQueries({ queryKey: ['update_project', projectId] }),
+            queryClient.invalidateQueries({queryKey : ['task', taskId]})
             navigate(location.pathname, {replace : true})
         }
 
