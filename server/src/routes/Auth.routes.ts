@@ -7,9 +7,9 @@ const router = Router();
 router.post('/create-account',
     body('name').notEmpty().withMessage("name is required"),
     body('email').isEmail().withMessage('must be email'),
-    body('password').isLength({min : 8}).withMessage("name is required"),
-    body('password_confirmation').custom((value, {req}) => {
-        if(value !== req.body.password){
+    body('password').isLength({ min: 8 }).withMessage("name is required"),
+    body('password_confirmation').custom((value, { req }) => {
+        if (value !== req.body.password) {
             throw new Error("password not match")
         }
         return true
@@ -17,4 +17,8 @@ router.post('/create-account',
     handleInputErros,
     AuthContoller.createAccount)
 
+router.post('/token-confirmation',
+    body('token').notEmpty().withMessage("token is required"),
+    handleInputErros,
+    AuthContoller.tokenConfirmation)
 export default router

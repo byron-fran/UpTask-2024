@@ -3,7 +3,6 @@ import User from '../models/User';
 import Token from '../models/Token';
 import bcrypt from 'bcrypt';
 import { generateToken } from '../utils/token';
-import { transport } from '../config/nodemailer';
 import { AuthEmail } from '../emails/AuthEmail';
 
 export class AuthContoller {
@@ -29,14 +28,34 @@ export class AuthContoller {
             token.user = user.id;
 
             AuthEmail.emailConfirmation
-            ({ 
-                email: user.email, 
-                token: token.token, 
-                name: user.name 
-            });
+                ({
+                    email: user.email,
+                    token: token.token,
+                    name: user.name
+                });
 
             await Promise.allSettled([user.save(), token.save()])
             return res.status(200).json({ user })
+
+        } catch (error: unknown) {
+            return res.status(500).json({ error })
+        }
+    };
+
+    public static tokenConfirmation = async (req: Request, res: Response) => {
+        const { token } = req.body
+        try {
+
+            const tokenExists = await Token.findOne({token})
+            if(!tokenExists){
+                const error = new Error("token invalidate")
+                return res.status(401).json({errors : error.message}) 
+            };
+            const user = await User.findById(tokenExists.user)
+            user.confirmed = true
+
+            await Promise.allSettled([user.save(), tokenExists.deleteOne()])
+            return res.status(200).send("account created successfully")
 
         } catch (error: unknown) {
             return res.status(500).json({ error })
