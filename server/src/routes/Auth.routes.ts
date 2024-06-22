@@ -20,5 +20,13 @@ router.post('/create-account',
 router.post('/token-confirmation',
     body('token').notEmpty().withMessage("token is required"),
     handleInputErros,
-    AuthContoller.tokenConfirmation)
+    AuthContoller.tokenConfirmation);
+
+router.post('/login',
+    body('email').notEmpty().withMessage('email is required'),
+    body('password').notEmpty().withMessage("password is required"),
+    handleInputErros,
+    AuthContoller.login);
+
+    
 export default router
