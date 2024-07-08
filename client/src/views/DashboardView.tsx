@@ -37,7 +37,7 @@ const DashboardView = () => {
         <p className="text-2xl font-light text-gray-500 mt-5 ">Manage your projects</p>
 
         <nav className="my-5">
-          <Link className="bg-purple-400 hover:bg-purple-500 px-10 text-white text-xl font-bold cursor-pointer transition-colors" to='/projects/create/'>New Project</Link>
+          <Link className="bg-purple-400 hover:bg-purple-500 px-10 py-2 rounded-md text-white text-xl font-bold cursor-pointer transition-colors" to='/projects/create/'>New Project</Link>
         </nav>
 
         {data.data?.length ? (
