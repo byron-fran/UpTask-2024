@@ -36,7 +36,7 @@ export class AuthContoller {
                 });
 
             await Promise.allSettled([user.save(), token.save()])
-            return res.status(200).json({ user })
+            return res.status(200).send("Account created success, check your email")
 
         } catch (error: unknown) {
             return res.status(500).json({ error })
@@ -47,7 +47,8 @@ export class AuthContoller {
         const { token } = req.body
         try {
 
-            const tokenExists = await Token.findOne({ token })
+            const tokenExists = await Token.findOne({ token });
+            console.log(tokenExists)
             if (!tokenExists) {
                 const error = new Error("token invalidate")
                 return res.status(401).json({ errors: error.message })
@@ -82,21 +83,56 @@ export class AuthContoller {
                         token: token.token,
                         name: user.name
                     });
-                await Promise.allSettled([ token.save()])    
+                await Promise.allSettled([token.save()])
                 return res.status(401).json({ errors: "Your account is not confirmed, check your email for a new token" })
             };
 
             // check password
             const isPasswordCorrect = await checkPassword(password, user.password);
-            if(!isPasswordCorrect){
-                
-                return res.status(401).send("Password incorrect");
+            if (!isPasswordCorrect) {
+
+                return res.status(401).json({errors :"Password incorrect"});
             };
 
-            return res.status(200).send("ok")
+            return res.status(200).send("authenticated")
         }
         catch (error: unknown) {
             return res.status(500).json({ error })
         }
-    }
+    };
+    public static requestCode = async (req: Request, res: Response) => {
+        const { email } = req.body
+        try {
+
+            const user = await User.findOne({ email });
+            if (!user) {
+
+                return res.status(404).json({ errors: "email does not exists" });
+
+            };
+
+            if (user.confirmed) {
+
+                return res.status(404).json({ errors: "user already confirmed" });
+            }
+
+            const token = new Token()
+            token.token = generateToken()
+            token.user = user.id;
+
+            AuthEmail.emailConfirmation
+                ({
+                    email: user.email,
+                    token: token.token,
+                    name: user.name
+                });
+
+            await Promise.allSettled([user.save(), token.save()])
+            return res.status(200).send("new token created, check your email")
+
+        } catch (error: unknown) {
+            return res.status(500).json({ error })
+        }
+    };
+
 }

@@ -17,7 +17,7 @@ export class AuthEmail {
             text : 'Confirm your account',
             html : `
                 <p>Hello ${user.name}, Activate your account</p>
-                <a href="#">Tap in this link</a>
+                <a href="${process.env.URL_FRONTEND}/auth/confirm-account">Tap in this link</a>
                 <p>Copy this code ${user.token} and paste </p>
             `
         })

@@ -7,6 +7,8 @@ import DetailViewProject from "./views/Projects/DetailViewProject";
 import AuthLayout from "./layouts/AuthLayout"
 import LoginPage from "./views/auth/LoginPage"
 import RegisterPage from "./views/auth/RegisterPage"
+import ConfirmAccount from "./views/auth/ConfirmAccount"
+import RequestCode from "./views/auth/RequestCode"
 
 const Router = () => {
     return (
@@ -22,6 +24,8 @@ const Router = () => {
                 <Route element={<AuthLayout/>}>
                     <Route path="/auth/login" element={<LoginPage/>} />
                     <Route path="/auth/register" element={<RegisterPage/>}/>
+                    <Route path="/auth/confirm-account" element={<ConfirmAccount/>}/>
+                    <Route path="/auth/request-code" element={<RequestCode/>}/>
                 </Route>
             </Routes>
         </BrowserRouter>
