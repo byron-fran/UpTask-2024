@@ -9,6 +9,7 @@ import LoginPage from "./views/auth/LoginPage"
 import RegisterPage from "./views/auth/RegisterPage"
 import ConfirmAccount from "./views/auth/ConfirmAccount"
 import RequestCode from "./views/auth/RequestCode"
+import ForgotPassword from "./views/auth/ForgotPassword"
 
 const Router = () => {
     return (
@@ -26,6 +27,7 @@ const Router = () => {
                     <Route path="/auth/register" element={<RegisterPage/>}/>
                     <Route path="/auth/confirm-account" element={<ConfirmAccount/>}/>
                     <Route path="/auth/request-code" element={<RequestCode/>}/>
+                    <Route path='/auth/forgot-password' element={<ForgotPassword/>} />
                 </Route>
             </Routes>
         </BrowserRouter>

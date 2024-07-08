@@ -13,7 +13,7 @@ export type Auth = z.infer<typeof AuthSchema>
 export type UserLoginForm = Pick<Auth, 'email' | 'password'>
 export type UserRegitserForm = Pick<Auth, 'name' | 'email' | 'password' | 'password_confirmation'>
 export type RequestConfirmationCodeForm = Pick<Auth, 'email'>
-
+export type ForgotPasswordForm = Pick<Auth, 'email'>
 
 export const taskStatusSchema = z.enum(["pending", "onHold", "inProgress", "underReview", "completed"])
 export const taskSchema = z.object({

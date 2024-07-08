@@ -85,6 +85,9 @@ const LoginPage = () => {
                 <Link to='/auth/register' className='text-center text-gray-300 font-normal'>
                     Do not you have an account ? Signup
                 </Link>
+                <Link to='/auth/forgot-password' className='text-center text-gray-300 font-normal'>
+                    Forgot your password
+                </Link>
             </nav>
         </>
     )

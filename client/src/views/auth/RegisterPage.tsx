@@ -136,6 +136,9 @@ const RegisterPage = () => {
                 <Link to='/auth/login' className='text-center text-gray-300 font-normal'>
                     Do you have an account ? Login
                 </Link>
+                <Link to='/auth/forgot-password' className='text-center text-gray-300 font-normal'>
+                    Forgot your password
+                </Link>
             </nav>
         </>
     )
