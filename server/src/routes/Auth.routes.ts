@@ -27,9 +27,15 @@ router.post('/login',
     body('password').notEmpty().withMessage("password is required"),
     handleInputErros,
     AuthContoller.login);
+
 router.post('/request-code',
     body('email').notEmpty().withMessage('email is required'),
     handleInputErros,
     AuthContoller.requestCode);
+
+router.post('/forgot-password',
+    body('email').notEmpty().withMessage('email is required'),
+    handleInputErros,
+    AuthContoller.forgotPassword);
 
 export default router

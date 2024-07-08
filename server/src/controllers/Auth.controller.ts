@@ -91,7 +91,7 @@ export class AuthContoller {
             const isPasswordCorrect = await checkPassword(password, user.password);
             if (!isPasswordCorrect) {
 
-                return res.status(401).json({errors :"Password incorrect"});
+                return res.status(401).json({ errors: "Password incorrect" });
             };
 
             return res.status(200).send("authenticated")
@@ -100,6 +100,7 @@ export class AuthContoller {
             return res.status(500).json({ error })
         }
     };
+
     public static requestCode = async (req: Request, res: Response) => {
         const { email } = req.body
         try {
@@ -128,6 +129,37 @@ export class AuthContoller {
                 });
 
             await Promise.allSettled([user.save(), token.save()])
+            return res.status(200).send("new token created, check your email")
+
+        } catch (error: unknown) {
+            return res.status(500).json({ error })
+        }
+    };
+    public static forgotPassword = async (req: Request, res: Response) => {
+        const { email } = req.body
+        try {
+
+            const user = await User.findOne({ email });
+            if (!user) {
+
+                return res.status(404).json({ errors: "email does not exists" });
+
+            };
+
+       
+            const token = new Token()
+            token.token = generateToken()
+            token.user = user.id;
+
+            await token.save();
+            AuthEmail.newPassword
+                ({
+                    email: user.email,
+                    token: token.token,
+                    name: user.name
+                });
+
+            
             return res.status(200).send("new token created, check your email")
 
         } catch (error: unknown) {
