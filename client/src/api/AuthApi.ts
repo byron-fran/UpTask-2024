@@ -97,6 +97,21 @@ export const changeNewPassword = async ({token, formData} : changeNewPasswordPro
             throw new Error(error.response?.data.errors)
         }
     }
+};
+
+export const getUser = async () => {
+  
+    try {
+        
+        const {data} = await api.get('/auth/user-profile')
+        return data;
+
+    } catch (error  : unknown) {    
+        if (isAxiosError(error)){
+            
+            throw new Error(error.response?.data.errors)
+        }
+    }
 }
 
 

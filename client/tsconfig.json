@@ -13,6 +13,7 @@
       "@/lib/*" : ["lib/*"],
       "@/utils/*" : ["utils/*"],
       "@/locals/*" : ["locals/*"],
+      "@/hooks/*" : ["hooks/*"],
     },
 
     /* Bundler mode */
