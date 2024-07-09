@@ -8,11 +8,19 @@ import { Bars3Icon } from '@heroicons/react/20/solid'
 import { Link } from 'react-router-dom'
 import { Fragment } from 'react/jsx-runtime'
 import { User } from '../types'
+import { useQueryClient } from '@tanstack/react-query';
 
 interface Props {
-    username : User['name']
+    username: User['name']
 }
-export const NavMenu = ({username} : Props) => {
+export const NavMenu = ({ username }: Props) => {
+
+    const queryClient = useQueryClient();
+    
+    const logout = () => {
+        localStorage.removeItem('AUTH_TOKEN');
+        queryClient.invalidateQueries({ queryKey: ['profile'] })
+    };
 
     return (
         <Popover className='relative'>
@@ -47,7 +55,7 @@ export const NavMenu = ({username} : Props) => {
                         <button
                             className='block p-2 hover:text-purple-950'
                             type='button'
-                            onClick={() => { }}
+                            onClick={logout}
                         >
                             Cerrar Sesión
                         </button>
