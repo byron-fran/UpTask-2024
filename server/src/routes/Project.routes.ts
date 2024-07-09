@@ -5,10 +5,13 @@ import { handleInputErros } from "../middlewares/validators";
 import { TaskController } from "../controllers/Tasks.controller";
 import { ProjectExists } from "../middlewares/projects";
 import { TaskExists, TasksBelongToProject } from "../middlewares/tasks";
+import { authenticate } from "../middlewares/auth-token";
 
 const router = Router()
 
-router.get('/', ProjectController.getAllProjects)
+router.use(authenticate)
+
+router.get('/',  ProjectController.getAllProjects)
 
 router.get('/:id',
     param('id').isMongoId().withMessage('id not valid'),

@@ -1,11 +1,13 @@
 import mongoose, {Schema, Document, PopulatedDoc, Types} from "mongoose";
 import { TasksInterface } from "./Tasks";
+import { UserInterface } from "./User";
 
 export interface ProjectInterface extends Document  {
     projectName : string,
     clientName : string,
     description : string,
-    tasks : PopulatedDoc<TasksInterface & Document>[]
+    tasks : PopulatedDoc<TasksInterface & Document>[],
+    manager : PopulatedDoc<UserInterface & Document>
 
 }
 
@@ -31,7 +33,11 @@ const ProjectSchema: Schema = new Schema({
             type : Types.ObjectId,
             ref : 'Task'
         }
-    ]
+    ],
+    manager : {
+        type : Types.ObjectId,
+        ref : 'User'
+    }
 }, {timestamps : true})
 
 const Project = mongoose.model<ProjectInterface>('Project', ProjectSchema)

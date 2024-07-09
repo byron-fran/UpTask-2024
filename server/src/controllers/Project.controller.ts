@@ -6,7 +6,7 @@ export class ProjectController {
     static createProject = async (req: Request, res: Response) => {
 
         const project = new Project(req.body)
-
+        project.manager = req.user.id
         try {
 
             await project.save();
@@ -17,9 +17,14 @@ export class ProjectController {
     };
 
     static getAllProjects = async (req: Request, res: Response) => {
+        console.log(req.user.id)
         try {
 
-            const projects = await Project.find()
+            const projects = await Project.find({
+                $or : [
+                    {manager : {$in : req.user.id}}
+                ]
+            })
 
             return res.status(200).json(projects);
 
@@ -36,6 +41,11 @@ export class ProjectController {
 
             if (!project) {
                 return res.status(404).json({ errors: "project not found" })
+            };
+
+            if (project.manager.toString() !== req.user.id){
+
+                return res.status(404).json({ errors: "project unauthorizated" })
             }
             return res.status(200).json(project);
 
@@ -53,7 +63,7 @@ export class ProjectController {
             if (!project) {
                 return res.status(404).json({ errors: "project not found" })
             };
-            
+
             project.clientName = req.body.clientName;
             project.description = req.body.description;
             project.projectName = req.body.projectName;
@@ -76,8 +86,8 @@ export class ProjectController {
                 return res.status(404).json({ errors: "project not found" })
             }
             await project.deleteOne()
-        
-            return res.status(204).json({ message : "delete success"});
+
+            return res.status(204).json({ message: "delete success" });
 
         } catch (error: unknown) {
             console.log(error)
