@@ -5,6 +5,7 @@ import bcrypt from 'bcrypt';
 import { generateToken } from '../utils/token';
 import { AuthEmail } from '../emails/AuthEmail';
 import { checkPassword } from '../utils/check-password';
+import { generateJWT } from '../utils/jwt';
 
 export class AuthContoller {
 
@@ -93,8 +94,8 @@ export class AuthContoller {
 
                 return res.status(401).json({ errors: "Password incorrect" });
             };
-
-            return res.status(200).send("authenticated")
+            const token = generateJWT({id : user.id})
+            return res.status(200).send(token)
         }
         catch (error: unknown) {
             return res.status(500).json({ error })
