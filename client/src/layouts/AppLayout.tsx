@@ -1,4 +1,4 @@
-import { Link, Outlet , Navigate} from 'react-router-dom'
+import { Link, Outlet, Navigate } from 'react-router-dom'
 import Logo from '@/components/Logo'
 import { NavMenu } from '@/components/NavMenu'
 import { ToastContainer } from 'react-toastify'
@@ -12,11 +12,11 @@ const AppLayout = () => {
   if (isLoading) return 'loading...';
 
   if (isError) {
-    return <Navigate to={'/auth/login'}/>
+    return <Navigate to={'/auth/login'} />
   };
 
 
-  return (
+  if (data) return (
     <>
       <header className='bg-gray-800 p-5'>
         <div className=' max-w-screen-xl mx-auto flex flex-col lg:flex-row justify-between items-center'>
@@ -25,7 +25,7 @@ const AppLayout = () => {
               <Logo />
             </Link>
           </div>
-          <NavMenu />
+          <NavMenu username={data.name} />
         </div>
       </header>
 

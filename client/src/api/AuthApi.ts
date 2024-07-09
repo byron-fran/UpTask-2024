@@ -1,6 +1,6 @@
 import api from "@/lib/axios";
 import { isAxiosError } from "axios";
-import { ForgotPasswordForm, RequestConfirmationCodeForm, UserLoginForm, UserRegitserForm, NewPasswordForm } from "../types";
+import { ForgotPasswordForm, RequestConfirmationCodeForm, UserLoginForm, UserRegitserForm, NewPasswordForm, User } from "../types";
 
 export const createAccount = async (formData : UserRegitserForm) => {
     try {
@@ -103,7 +103,7 @@ export const getUser = async () => {
   
     try {
         
-        const {data} = await api.get('/auth/user-profile')
+        const {data} = await api.get<User>('/auth/user-profile')
         return data;
 
     } catch (error  : unknown) {    
