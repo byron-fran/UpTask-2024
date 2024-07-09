@@ -2,6 +2,8 @@ import { Router } from "express";
 import { AuthContoller } from "../controllers/Auth.controller";
 import { body, param } from "express-validator";
 import { handleInputErros } from "../middlewares/validators";
+import { authenticate } from "../middlewares/auth-token";
+
 const router = Router();
 
 router.post('/create-account',
@@ -47,5 +49,7 @@ router.post('/new-password/:token',
     param('token').notEmpty().withMessage("token is required"),
     handleInputErros,
     AuthContoller.changeNewPassword);
+
+router.get('/user-profile', authenticate,  AuthContoller.getUser)    
 
 export default router

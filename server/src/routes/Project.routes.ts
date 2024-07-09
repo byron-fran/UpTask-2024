@@ -6,12 +6,13 @@ import { TaskController } from "../controllers/Tasks.controller";
 import { ProjectExists } from "../middlewares/projects";
 import { TaskExists, TasksBelongToProject } from "../middlewares/tasks";
 import { authenticate } from "../middlewares/auth-token";
+import { TeamMemberProject } from "../controllers/Team.controller";
 
 const router = Router()
 
 router.use(authenticate)
 
-router.get('/',  ProjectController.getAllProjects)
+router.get('/', ProjectController.getAllProjects)
 
 router.get('/:id',
     param('id').isMongoId().withMessage('id not valid'),
@@ -67,4 +68,25 @@ router.post('/:projectId/tasks/:taskId/status',
     param('taskId').isMongoId().withMessage('id not valid'),
     body('status').notEmpty().withMessage('status not must empty'),
     handleInputErros, TaskController.updateTaskStatus)
+
+// teams routes
+router.post('/:projectId/user/find', 
+
+    body('email').isEmail().withMessage("email is required"),
+    handleInputErros,
+    TeamMemberProject.findUser
+)
+router.post('/:projectId/user', 
+    body('id').isMongoId().withMessage("id  is required"),
+    handleInputErros,
+    TeamMemberProject.addMemberToTeam
+);
+router.get('/:projectId/team', 
+    TeamMemberProject.getMemberProject
+)
+router.delete('/:projectId/user', 
+    body('id').isMongoId().withMessage("id  is required"),
+    handleInputErros,
+    TeamMemberProject.deleteMemberToTeam
+)
 export default router

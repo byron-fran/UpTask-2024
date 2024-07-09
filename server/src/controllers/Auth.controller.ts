@@ -211,6 +211,9 @@ export class AuthContoller {
         }  
         
 
+    };
+    public static getUser = async (req: Request, res: Response) => {
+        return res.status(200).json(req.user)
     }
 
 }
