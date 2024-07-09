@@ -15,8 +15,8 @@ const LoginPage = () => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm({ defaultValues: initialValues })
     const { mutate } = useMutation({
         mutationFn: login,
-        onSuccess: (message) => {
-            toast.success(message),
+        onSuccess: () => {
+            toast.success('loging...'),
             reset()
         },
         onError : (data) => {

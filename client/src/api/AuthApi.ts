@@ -17,6 +17,7 @@ export const createAccount = async (formData : UserRegitserForm) => {
 export const login = async (formData : UserLoginForm) => {
     try {
         const {data} = await api.post('/auth/login', formData)
+        localStorage.setItem('AUTH_TOKEN', data);
         return data;
 
     } catch (error  : unknown) {
