@@ -38,4 +38,14 @@ router.post('/forgot-password',
     handleInputErros,
     AuthContoller.forgotPassword);
 
+router.post('/token-password',
+    body('token').notEmpty().withMessage("token is required"),
+    handleInputErros,
+    AuthContoller.tokenPasswordConfirmation);
+
+router.post('/new-password/:token',
+    param('token').notEmpty().withMessage("token is required"),
+    handleInputErros,
+    AuthContoller.changeNewPassword);
+
 export default router

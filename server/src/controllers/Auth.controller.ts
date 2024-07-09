@@ -48,7 +48,7 @@ export class AuthContoller {
         try {
 
             const tokenExists = await Token.findOne({ token });
-            console.log(tokenExists)
+            
             if (!tokenExists) {
                 const error = new Error("token invalidate")
                 return res.status(401).json({ errors: error.message })
@@ -135,6 +135,7 @@ export class AuthContoller {
             return res.status(500).json({ error })
         }
     };
+
     public static forgotPassword = async (req: Request, res: Response) => {
         const { email } = req.body
         try {
@@ -166,5 +167,49 @@ export class AuthContoller {
             return res.status(500).json({ error })
         }
     };
+
+
+    public static tokenPasswordConfirmation = async (req: Request, res: Response) => {
+        const { token } = req.body;
+    
+        try {
+
+            const tokenExists = await Token.findOne({ token });
+
+            if (!tokenExists) {
+                const error = new Error("token invalidate")
+                return res.status(401).json({ errors: error.message })
+            };
+         
+
+            return res.status(200).send("now, create new password")
+
+        } catch (error: unknown) {
+            return res.status(500).json({ error })
+        }
+    };
+
+    public static changeNewPassword = async (req: Request, res: Response) => {
+        const {token} = req.params;
+        try {
+            const tokenExists = await Token.findOne({ token });
+            
+            if (!tokenExists) {
+                const error = new Error("token invalidate")
+                return res.status(401).json({ errors: error.message })
+            };
+            const user = await User.findById(tokenExists.user)
+            const salt = await bcrypt.genSalt(10)
+            user.password = await bcrypt.hash(req.body.password, salt);
+
+            await Promise.allSettled([user.save(), tokenExists.deleteOne()]);
+            return res.status(200).send("change password success")
+            
+        } catch (error: unknown) {
+            return res.status(500).json({ error })
+        }  
+        
+
+    }
 
 }
