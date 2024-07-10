@@ -15,7 +15,6 @@ const SearchResults: FC<Props> = ({ user, reset }) => {
     const params = useParams();
     const projectId = params.id!;
     const navigate = useNavigate();
-
     const { mutate } = useMutation({
 
         mutationFn: addMemberToTeam,
