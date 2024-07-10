@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 import { Dialog, Transition, TransitionChild, DialogPanel, DialogTitle } from '@headlessui/react';
 import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom';
-import { useQuery , useMutation, useQueryClient} from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { changeStatus, getTaskById } from '@/api/TaskApi';
 import { toast } from 'react-toastify';
 import { formatDate } from '@/utils/utils';
@@ -25,20 +25,20 @@ export default function TaskModalDetails() {
 
     });
     const queryClient = useQueryClient()
-    const {mutate} = useMutation({
-        mutationFn : changeStatus,
-        onSuccess : () => {
+    const { mutate } = useMutation({
+        mutationFn: changeStatus,
+        onSuccess: () => {
             toast.success('Update success'),
-            queryClient.invalidateQueries({queryKey : ['update_project', id]})
-            queryClient.invalidateQueries({queryKey :['task', taskId]})
+                queryClient.invalidateQueries({ queryKey: ['update_project', id] })
+            queryClient.invalidateQueries({ queryKey: ['task', taskId] })
         },
-        onError : () => {
+        onError: () => {
             toast.error('something wrong')
-        }        
+        }
     })
     const hanleChangeStatus = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const status = e.target.value as TaskStatus
-        mutate({projectId : id!, id : taskId, status})
+        mutate({ projectId: id!, id: taskId, status })
     }
     if (isError) {
         toast.error("task not found")
@@ -81,6 +81,10 @@ export default function TaskModalDetails() {
                                         className="font-black text-4xl text-slate-600 my-5"
                                     >{data.name}
                                     </DialogTitle>
+                                    
+                                    {data.status !== 'pending' && (
+                                        <p className='font-normal'>Updated by:{' '}<span className='text-gray-500 '>{data.completedBy?.name}</span></p>
+                                    )}
                                     <p className='text-lg text-slate-500 mb-2'>{data.description}</p>
                                     <div className='my-5 space-y-3'>
                                         <label className='font-bold'>Estado Actual:</label>
