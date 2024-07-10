@@ -35,6 +35,10 @@ export class TaskController {
 
         try {
             const task = await Task.findById(req.task.id)
+                .populate({
+                    path : 'completedBy.user',
+                    select : 'id name email'
+                })
 
             return res.status(200).json(task);
         } catch (error: unknown) {
@@ -48,7 +52,7 @@ export class TaskController {
         try {
             const task = await Task.findById(req.task.id)
 
-        
+
             task.name = req.body.name
             task.description = req.body.description
             await task.save()
@@ -79,11 +83,16 @@ export class TaskController {
 
         const { status } = req.body;
         try {
-
+            const data = {
+                user : req.user.id,
+                status
+            }
             req.task.status = status
+            req.task.completedBy.push(data);
+
             await req.task.save()
 
-            return res.status(200).json(req.task);
+            return res.status(200).send("update success");
 
         } catch (error: unknown) {
             console.log(error)

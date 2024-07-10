@@ -1,4 +1,3 @@
-import { toString } from "express-validator/lib/utils";
 import mongoose, { Schema, Document, Types } from "mongoose";
 
 const taskStatus = {
@@ -16,7 +15,11 @@ export interface TasksInterface extends Document {
     description: string,
     project: Types.ObjectId,
     status: TaskStatus,
-    completedBy: Types.ObjectId
+    completedBy: {
+        user: Types.ObjectId,
+        status: TaskStatus
+    }[]
+
 }
 
 export const TaskSchema = new Schema({
@@ -39,10 +42,22 @@ export const TaskSchema = new Schema({
         enum: Object.values(taskStatus),
         default: taskStatus.PENDING
     },
-    completedBy: {
-        type: Types.ObjectId,
-        ref: 'User'
-    }
+    completedBy: [
+        {
+
+            user: {
+                type: Types.ObjectId,
+                ref: 'User',
+                default: null
+            },
+
+            status: {
+                type: String,
+                enum: Object.values(taskStatus),
+                default: taskStatus.PENDING
+            }
+        }
+    ]
 }, { timestamps: true })
 
 const Task = mongoose.model<TasksInterface>('Task', TaskSchema)
