@@ -6,7 +6,7 @@ export class TeamMemberProject {
 
     public static findUser = async (req: Request, res: Response) => {
         const { email } = req.body
-
+       
         try {
             const user = await User.findOne({ email }).select('_id email name')
             if (!user) {
@@ -26,7 +26,7 @@ export class TeamMemberProject {
             })
    
             return res.status(200).json(project.team);
-            
+
         } catch (error: unknown) {
             return res.status(500).json({ errors: "error" })
         }
@@ -58,7 +58,7 @@ export class TeamMemberProject {
 
     public static deleteMemberToTeam = async (req: Request, res: Response) => {
 
-        const { id } = req.body
+        const { id } = req.params
         try {
 
             if (!req.project.team.some(t => t.toString() === id)) {

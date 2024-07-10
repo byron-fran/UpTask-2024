@@ -192,6 +192,7 @@ export class AuthContoller {
 
     public static changeNewPassword = async (req: Request, res: Response) => {
         const {token} = req.params;
+        console.log({token})
         try {
             const tokenExists = await Token.findOne({ token });
             

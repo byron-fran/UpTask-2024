@@ -37,3 +37,16 @@ export const TasksBelongToProject = async (req: Request, res: Response, next: Ne
     }
 
 };
+export const hasAutorization = async (req: Request, res: Response, next: NextFunction) => {
+
+    try {
+
+        if (req.project.manager.toString() !== req.user._id.toString()) {
+            return res.status(401).json({ errors: "Action no validate" })
+        }
+        next()
+    } catch (error: unknown) {
+        return res.status(500).json({ errors: "someting wrong" })
+    }
+
+};

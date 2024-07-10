@@ -7,6 +7,7 @@ import { ProjectExists } from "../middlewares/projects";
 import { TaskExists, TasksBelongToProject } from "../middlewares/tasks";
 import { authenticate } from "../middlewares/auth-token";
 import { TeamMemberProject } from "../controllers/Team.controller";
+import { hasAutorization } from "../middlewares/tasks";
 
 const router = Router()
 
@@ -45,6 +46,7 @@ router.param('taskId', TaskExists)
 router.param('taskId', TasksBelongToProject);
 
 router.post('/:projectId/tasks',
+    hasAutorization,
     body('name').notEmpty().withMessage("name not empty"),
     body('description').notEmpty().withMessage('description not empty'),
     handleInputErros,
@@ -57,11 +59,14 @@ router.get('/:projectId/tasks/:taskId',
     handleInputErros, TaskController.getTaskById);
 
 router.put('/:projectId/tasks/:taskId',
+    hasAutorization,
     param('taskId').isMongoId().withMessage('id not valid'),
     handleInputErros, TaskController.upateTask)
 
 router.delete('/:projectId/tasks/:taskId',
+    hasAutorization,
     param('taskId').isMongoId().withMessage('id not valid'),
+
     handleInputErros, TaskController.deleteTaskById)
 
 router.post('/:projectId/tasks/:taskId/status',
@@ -72,8 +77,7 @@ router.post('/:projectId/tasks/:taskId/status',
 // teams routes
 router.post('/:projectId/user/find', 
 
-    body('email').isEmail().withMessage("email is required"),
-    handleInputErros,
+
     TeamMemberProject.findUser
 )
 router.post('/:projectId/user', 
@@ -84,8 +88,8 @@ router.post('/:projectId/user',
 router.get('/:projectId/team', 
     TeamMemberProject.getMemberProject
 )
-router.delete('/:projectId/user', 
-    body('id').isMongoId().withMessage("id  is required"),
+router.delete('/:projectId/user/:id', 
+    param('id').isMongoId().withMessage("id  is required"),
     handleInputErros,
     TeamMemberProject.deleteMemberToTeam
 )
