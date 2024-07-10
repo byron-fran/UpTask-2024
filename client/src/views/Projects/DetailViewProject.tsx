@@ -20,7 +20,7 @@ const DetailViewProject = () => {
     if (isError) return '...Ups error';
     
     if (data) {
-
+        
         return (
             <>
                 <h1 className='text-5xl font-black '>{data.projectName}</h1>

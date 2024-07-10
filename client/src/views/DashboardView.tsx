@@ -5,8 +5,9 @@ import { Fragment } from 'react'
 import { EllipsisVerticalIcon } from '@heroicons/react/20/solid'
 import { Menu, MenuButton, MenuItem, MenuItems, Transition } from '@headlessui/react';
 import { toast } from "react-toastify"
-
+import { useAuth } from "@/hooks/useAuth"
 const DashboardView = () => {
+  const { data: user, isLoading: authLoading } = useAuth();
 
   const { data, isLoading, } = useQuery({
     queryKey: ['projects'],
@@ -15,21 +16,22 @@ const DashboardView = () => {
   })
   const queryClient = useQueryClient();
 
-  const {mutate} = useMutation({
-    mutationFn : deleteProjectById,
-    onError : () => {
+  const { mutate } = useMutation({
+    mutationFn: deleteProjectById,
+    onError: () => {
       toast.error("error to delete")
     },
-    onSuccess : () => {
+    onSuccess: () => {
       toast.success("delete success")
-      queryClient.invalidateQueries({queryKey : ['projects']})
+      queryClient.invalidateQueries({ queryKey: ['projects'] })
 
     }
   });
 
-  if (isLoading) return '..Loading'
+  if (isLoading && authLoading) return '..Loading'
 
-  if (data) {
+  if (data && user) {
+
     return (
       <>
 
@@ -76,21 +78,26 @@ const DashboardView = () => {
                             View Project
                           </Link>
                         </MenuItem>
-                        <MenuItem>
-                          <Link to={`/projects/${project._id}/update`}
-                            className='block px-3 py-1 text-sm leading-6 text-gray-900'>
-                            Update project
-                          </Link>
-                        </MenuItem>
-                        <MenuItem>
-                          <button
-                            type='button'
-                            className='block px-3 py-1 text-sm leading-6 text-red-500'
-                            onClick={() => mutate(project._id)}
-                          >
-                            Delete project
-                          </button>
-                        </MenuItem>
+                        {user._id === project.manager && (
+                          <>
+                            <MenuItem>
+                              <Link to={`/projects/${project._id}/update`}
+                                className='block px-3 py-1 text-sm leading-6 text-gray-900'>
+                                Update project
+                              </Link>
+                            </MenuItem>
+                            <MenuItem>
+                              <button
+                                type='button'
+                                className='block px-3 py-1 text-sm leading-6 text-red-500'
+                                onClick={() => mutate(project._id)}
+                              >
+                                Delete project
+                              </button>
+                            </MenuItem>
+                          </>
+                        )}
+
                       </MenuItems>
                     </Transition>
                   </Menu>
