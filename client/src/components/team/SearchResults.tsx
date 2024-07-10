@@ -4,20 +4,25 @@ import { useMutation } from '@tanstack/react-query';
 import { addMemberToTeam } from "@/api/TeamApi";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
-    user: TeamMember
+    user: TeamMember,
+    reset : () => void
 };
 
-const SearchResults: FC<Props> = ({ user }) => {
+const SearchResults: FC<Props> = ({ user, reset }) => {
     const params = useParams();
     const projectId = params.id!;
+    const navigate = useNavigate();
 
     const { mutate } = useMutation({
 
         mutationFn: addMemberToTeam,
         onSuccess: (data) => {
             toast.success(data)
+            reset()
+            navigate(location.pathname, {replace : true})
         },
         onError: (data) => {
             toast.error(data.message)

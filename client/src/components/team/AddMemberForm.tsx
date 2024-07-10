@@ -23,6 +23,11 @@ export default function AddMemberForm() {
 
         mutation.mutate({ email: data.email, projectId })
 
+    };
+
+    const handleReset = () => {
+        reset()
+        mutation.reset()
     }
 
     return (
@@ -66,7 +71,7 @@ export default function AddMemberForm() {
             <div className="mt-10">
                 <p>{mutation.isPending && 'loading...'}</p>
                 <p>{mutation.isError && mutation.error.message}</p>
-                {mutation.data && <SearchResults user={mutation.data} />}
+                {mutation.data && <SearchResults user={mutation.data} reset={handleReset} />}
             </div>
 
         </>
