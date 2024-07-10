@@ -57,3 +57,19 @@ export const getProjectTeam = async ({ projectId }: { projectId: Project['_id'] 
         }
     }
 };
+
+
+export const deleteMemberToTeam = async ({ id, projectId }: { id: TeamMember['_id'], projectId: Project['_id'] }) => {
+
+    try {
+
+        const { data } = await api.delete(`projects/${projectId}/user/${id}`);
+
+        return data;
+
+    } catch (error: unknown) {
+        if (isAxiosError(error)) {
+            throw new Error(error.response?.data.errors)
+        }
+    }
+};

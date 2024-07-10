@@ -1,10 +1,13 @@
 import { useNavigate, Link, useParams } from "react-router-dom"
 import AddMemberModal from "@/components/team/AddMemberModal";
-import {useQuery} from '@tanstack/react-query';
-import { getProjectTeam } from "@/api/TeamApi";
+import {useQuery, useMutation, useQueryClient} from '@tanstack/react-query';
+import { deleteMemberToTeam, getProjectTeam } from "@/api/TeamApi";
 import { Menu, Transition, MenuItem, MenuButton, MenuItems } from "@headlessui/react";
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
 import { Fragment } from "react/jsx-runtime";
+import { toast } from "react-toastify";
+
+
 const ProyectTeamView = () => {
 
     const navigate = useNavigate();
@@ -16,8 +19,23 @@ const ProyectTeamView = () => {
         queryKey : ['projectTeam', projectId]
     });
 
+    const {mutate} = useMutation({
+        mutationFn : deleteMemberToTeam,
+        onSuccess : (data) => {
+            toast.success(data);
+            queryClient.invalidateQueries({queryKey : ['projectTeam', projectId]})
+        },
+        onError : (data) => {
+            toast.error(data.message)
+        }
+    });
+
+    const queryClient = useQueryClient();
+
+ 
+
     if(isLoading) return 'Loading...' ;
-    
+
     return (
         <>
             <h1 className="text-5xl font-black">Manage you team</h1>
@@ -71,6 +89,7 @@ const ProyectTeamView = () => {
                                                 <button
                                                     type='button'
                                                     className='block px-3 py-1 text-sm leading-6 text-red-500'
+                                                    onClick={() => mutate({projectId,id :member._id})}
                                                 >
                                                     Eliminar del Proyecto
                                                 </button>
