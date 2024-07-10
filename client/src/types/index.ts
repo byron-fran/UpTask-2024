@@ -1,11 +1,12 @@
-import { z } from 'zod'
+import { never, TypeOf, z } from 'zod'
 
 // Auth 
 const AuthSchema = z.object({
     name: z.string(),
     email: z.string().email(),
     password: z.string(),
-    password_confirmation: z.string()
+    password_confirmation: z.string(),
+
 
 })
 
@@ -61,3 +62,12 @@ export const dashboardProjectSchema = z.array(
 export type Project = z.infer<typeof projectSchema>
 
 export type ProjectFormData = Pick<Project, 'clientName' | 'projectName' | 'description'>
+
+
+const teamMemberSchema = userSchema.pick({
+    name : true,
+    email : true,
+    _id : true
+})
+export type TeamMember = z.infer<typeof teamMemberSchema>
+export type TeamMemberForm = Pick<TeamMember, 'email'>

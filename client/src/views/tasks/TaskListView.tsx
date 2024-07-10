@@ -17,9 +17,6 @@ const initialStatusGroups: GroupedTasks = {
 interface Props {
     tasks: task[]
 }
-
-
-
 const borderColorStatus : {[key : string] : string} = {
     pending : 'border-t-slate-500',
     onHold : 'border-t-red-500',
