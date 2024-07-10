@@ -1,4 +1,4 @@
-import { never, TypeOf, z } from 'zod'
+import { never, object, TypeOf, z } from 'zod'
 
 // Auth 
 const AuthSchema = z.object({
@@ -32,7 +32,11 @@ export const taskSchema = z.object({
     project: z.string(),
     description: z.string(),
     status: taskStatusSchema,
-    completedBy: userSchema.or(z.null()),
+    completedBy: z.array(object({
+        _id : z.string(),
+        user : userSchema,
+        status : taskStatusSchema
+    })),
     createdAt: z.string(),
     updatedAt: z.string(),
 

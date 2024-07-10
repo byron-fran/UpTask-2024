@@ -81,11 +81,23 @@ export default function TaskModalDetails() {
                                         className="font-black text-4xl text-slate-600 my-5"
                                     >{data.name}
                                     </DialogTitle>
-                                    
-                                    {data.status !== 'pending' && (
-                                        <p className='font-normal'>Updated by:{' '}<span className='text-gray-500 '>{data.completedBy?.name}</span></p>
-                                    )}
+
+
                                     <p className='text-lg text-slate-500 mb-2'>{data.description}</p>
+                                    <p className='text-gray-500'>History changes</p>
+
+                                    <ul className='list-decimal'>
+                                        {data.completedBy.map(activityLog => (
+                                            <li key={activityLog._id}>
+                                                <span className='font-bold text-slate-600'>
+                                                    {activityLog.status}
+                                                </span>
+                                                {' '}
+                                                by{' '} {activityLog.user.name}
+                                            </li>
+                                        ))}
+                                    </ul>
+
                                     <div className='my-5 space-y-3'>
                                         <label className='font-bold'>Estado Actual:</label>
                                         <select

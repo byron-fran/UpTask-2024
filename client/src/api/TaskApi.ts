@@ -27,13 +27,13 @@ export const createTask = async ({ formData, id }: Pick<taskProps, 'formData' | 
 export const getTaskById = async ({ projectId, id }: Pick<taskProps, 'projectId' | 'id'>) => {
 
     try {
-        
+
         const { data } = await api.get<task>(`/projects/${projectId}/tasks/${id}`)
         const response = taskSchema.safeParse(data);
-
-        if (response.success) {
-            return response.data
-        }
+        return data
+        // if (response.success) {
+        //     return response.data
+        // }
     }
     catch (error: unknown) {
         if (isAxiosError(error)) {
