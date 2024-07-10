@@ -15,7 +15,8 @@ const initialStatusGroups: GroupedTasks = {
 }
 
 interface Props {
-    tasks: task[]
+    tasks: task[],
+    canEdit : boolean
 }
 const borderColorStatus : {[key : string] : string} = {
     pending : 'border-t-slate-500',
@@ -25,7 +26,7 @@ const borderColorStatus : {[key : string] : string} = {
     completed : 'border-t-emerald-500'
 
 }
-const TaskListView = ({ tasks }: Props) => {
+const TaskListView = ({ tasks ,canEdit}: Props) => {
 
     const groupedTasks = tasks.reduce((acc, task) => {
         let currentGroup = acc[task.status] ? [...acc[task.status]] : [];
@@ -48,7 +49,7 @@ const TaskListView = ({ tasks }: Props) => {
                             {tasks.length === 0 ? (
                                 <li className="text-gray-500 text-center pt-3">No Hay tareas</li>
                             ) : (
-                                tasks.map(task => <TaskCard key={task._id} task={task} />)
+                                tasks.map(task => <TaskCard key={task._id} task={task} canEdit={canEdit} />)
                             )}
                         </ul>
                     </div>

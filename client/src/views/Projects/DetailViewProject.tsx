@@ -8,15 +8,20 @@ import EditTaskData from '@/components/tasks/EditTaskData';
 import TaskModalDetails from '@/components/tasks/DetailTaskModal';
 import { isManager } from '@/utils/police';
 import { useAuth } from '@/hooks/useAuth';
+import { useMemo } from 'react';
 
 const DetailViewProject = () => {
+
     const { id } = useParams();
     const navigate = useNavigate()
-    const {data : user, isLoading : authLoading} = useAuth()
+    const {data : user, isLoading : authLoading} = useAuth();
+
     const { data, isLoading, isError } = useQuery({
         queryKey: ['update_project', id!],
         queryFn: () => getProjectById(id!)
     });
+
+    const canEdit = useMemo(() => data?.manager === user?._id, [data, user]);
 
     if (isLoading && authLoading) return '...Loading';
     if (isError) return '...Ups error';
@@ -43,7 +48,7 @@ const DetailViewProject = () => {
                     </nav>
                 )}
                 <AddTaskModal />
-                <TaskListView tasks={data.tasks} />
+                <TaskListView tasks={data.tasks} canEdit={canEdit} />
                 <EditTaskData />
                 <TaskModalDetails />
             </>
