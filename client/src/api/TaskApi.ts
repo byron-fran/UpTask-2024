@@ -63,8 +63,8 @@ export const deleteTaskById = async ({ id, projectId }: Pick<taskProps, 'id' | '
 
     } catch (error: unknown) {
         if (isAxiosError(error)) {
-            console.log(error.response)
-            throw new Error(error.response?.data.error)
+           
+            throw new Error(error.response?.data.errors)
         }
     }
 };

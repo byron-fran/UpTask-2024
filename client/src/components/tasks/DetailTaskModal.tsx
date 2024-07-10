@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { formatDate } from '@/utils/utils';
 import { statusTranslations } from '@/locals/locals';
 import { TaskStatus } from '@/types/index';
+
 export default function TaskModalDetails() {
 
     const location = useLocation();

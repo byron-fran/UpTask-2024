@@ -23,12 +23,15 @@ const TaskCard = ({ task }: TaskCardProps) => {
 
     const { mutate } = useMutation({
         mutationFn: deleteTaskById,
-        onError: () => { },
+        onError: (data) => {
+            toast.error(data.message)
+         },
         onSuccess: () => {
             toast.success("deleted success")
             queryClient.invalidateQueries({ queryKey: ['update_project', projectId] })
             navigate(location.pathname, { replace: true })
-        }
+        },
+        
     });
 
     return (
