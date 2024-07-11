@@ -14,7 +14,7 @@ const ProyectTeamView = () => {
     const params = useParams();
     const projectId = params.id!;
 
-    const {data, isLoading, isError} = useQuery({
+    const {data, isLoading} = useQuery({
         queryFn : () =>getProjectTeam({projectId}),
         queryKey : ['projectTeam', projectId]
     });
