@@ -95,8 +95,18 @@ router.delete('/:projectId/user/:id',
     TeamMemberProject.deleteMemberToTeam
 );
 
+// Notes routes
 router.post('/:projectId/tasks/:taskId/notes',
-    body('content').isString().withMessage('content is required'), 
+    body('content').isString().withMessage('content is required'),
     handleInputErros,
-    NoteController.createNote)
+    NoteController.createNote);
+
+router.get('/:projectId/tasks/:taskId/notes',
+    NoteController.getNotesByTask
+)
+
+router.delete('/:projectId/tasks/:taskId/notes/:noteId',
+    param('noteId').isMongoId().withMessage('id is required'),
+    NoteController.deleteNoteById
+)
 export default router

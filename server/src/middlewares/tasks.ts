@@ -10,12 +10,14 @@ declare global {
 }
 export const TaskExists = async (req: Request, res: Response, next: NextFunction) => {
     const { taskId: id } = req.params;
+
     try {
         const task = await Task.findById(id)
 
         if (!task) {
             return res.status(404).json({ errors: "task not found" })
         }
+        
         req.task = task
         next()
     } catch (error: unknown) {
