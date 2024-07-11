@@ -8,6 +8,7 @@ import { TaskExists, TasksBelongToProject } from "../middlewares/tasks";
 import { authenticate } from "../middlewares/auth-token";
 import { TeamMemberProject } from "../controllers/Team.controller";
 import { hasAutorization } from "../middlewares/tasks";
+import { NoteController } from "../controllers/Note.Controller";
 
 const router = Router()
 
@@ -75,22 +76,27 @@ router.post('/:projectId/tasks/:taskId/status',
     handleInputErros, TaskController.updateTaskStatus)
 
 // teams routes
-router.post('/:projectId/user/find', 
+router.post('/:projectId/user/find',
 
 
     TeamMemberProject.findUser
 )
-router.post('/:projectId/user', 
+router.post('/:projectId/user',
     body('id').isMongoId().withMessage("id  is required"),
     handleInputErros,
     TeamMemberProject.addMemberToTeam
 );
-router.get('/:projectId/team', 
+router.get('/:projectId/team',
     TeamMemberProject.getMemberProject
 )
-router.delete('/:projectId/user/:id', 
+router.delete('/:projectId/user/:id',
     param('id').isMongoId().withMessage("id  is required"),
     handleInputErros,
     TeamMemberProject.deleteMemberToTeam
-)
+);
+
+router.post('/:projectId/tasks/:taskId/notes',
+    body('content').isString().withMessage('content is required'), 
+    handleInputErros,
+    NoteController.createNote)
 export default router
