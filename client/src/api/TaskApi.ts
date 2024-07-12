@@ -19,7 +19,7 @@ export const createTask = async ({ formData, id }: Pick<taskProps, 'formData' | 
     }
     catch (error: unknown) {
         if (isAxiosError(error)) {
-        
+
             throw new Error(error.response?.data.error)
         }
 
@@ -30,15 +30,13 @@ export const getTaskById = async ({ projectId, id }: Pick<taskProps, 'projectId'
     try {
 
         const { data } = await api.get<task>(`/projects/${projectId}/tasks/${id}`)
-        const response = taskSchema.safeParse(data);
+
         return data
-        // if (response.success) {
-        //     return response.data
-        // }
+
     }
     catch (error: unknown) {
         if (isAxiosError(error)) {
-           
+
             throw new Error(error.response?.data.error)
         }
 
@@ -55,7 +53,7 @@ export const updateTaskById = async ({ formData, id, projectId }: Pick<taskProps
 
     } catch (error: unknown) {
         if (isAxiosError(error)) {
-        
+
             throw new Error(error.response?.data.error)
         }
     }
