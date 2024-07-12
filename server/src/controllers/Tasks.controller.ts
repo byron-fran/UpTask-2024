@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import Project from "../models/Project";
 import Task from "../models/Tasks";
+import { populate } from "dotenv";
 
 
 export class TaskController {
@@ -38,6 +39,13 @@ export class TaskController {
                 .populate({
                     path : 'completedBy.user',
                     select : 'id name email'
+                })
+                .populate({
+                    path : 'notes',
+                    populate : {
+                        path : 'createdBy',
+                        select : 'id name email'
+                    }
                 })
 
             return res.status(200).json(task);
