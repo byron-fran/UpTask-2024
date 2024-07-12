@@ -1,32 +1,21 @@
 import { Link } from "react-router-dom"
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
-import { deleteProjectById, getAllProjects } from "@/api/ProjectApi"
+import { useQuery, } from "@tanstack/react-query"
+import { getAllProjects } from "@/api/ProjectApi"
 import { Fragment } from 'react'
 import { EllipsisVerticalIcon } from '@heroicons/react/20/solid'
 import { Menu, MenuButton, MenuItem, MenuItems, Transition } from '@headlessui/react';
-import { toast } from "react-toastify"
 import { useAuth } from "@/hooks/useAuth"
+import DeleteProjectModal from "@/components/Projects/DeleteProjectModal"
+import { useNavigate } from "react-router-dom"
+
 const DashboardView = () => {
   const { data: user, isLoading: authLoading } = useAuth();
-
+  const navigate = useNavigate()
   const { data, isLoading, } = useQuery({
     queryKey: ['projects'],
     queryFn: getAllProjects,
 
   })
-  const queryClient = useQueryClient();
-
-  const { mutate } = useMutation({
-    mutationFn: deleteProjectById,
-    onError: () => {
-      toast.error("error to delete")
-    },
-    onSuccess: () => {
-      toast.success("delete success")
-      queryClient.invalidateQueries({ queryKey: ['projects'] })
-
-    }
-  });
 
   if (isLoading && authLoading) return '..Loading'
 
@@ -95,7 +84,7 @@ const DashboardView = () => {
                               <button
                                 type='button'
                                 className='block px-3 py-1 text-sm leading-6 text-red-500'
-                                onClick={() => mutate(project._id)}
+                                onClick={() => navigate(location.pathname + `?deleteProject=${project._id}`)}
                               >
                                 Delete project
                               </button>
@@ -115,6 +104,7 @@ const DashboardView = () => {
             <Link className="text-fuchsia-500 font-bold" to='/projects/create/'> a new project</Link>
           </h1>
         )}
+        <DeleteProjectModal />
       </>
     )
   }

@@ -30,4 +30,19 @@ export const updatePassword = async (formData : UpdatePasswordProfileForm) => {
             throw new Error(error.response?.data.errors)
         }
     }
-}
+};
+
+export const checkPassword = async (password : string) => {
+
+    try {
+        
+        const {data} = await api.post<string>('/auth/check-password',{ password})
+        return data;
+
+    } catch (error  : unknown) {    
+        if (isAxiosError(error)){
+            
+            throw new Error(error.response?.data.errors)
+        }
+    }
+};
