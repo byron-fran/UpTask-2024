@@ -9,8 +9,6 @@ export class NoteController {
 
     static createNote = async (req: Request<{}, {}, NoteInterface>, res: Response) => {
 
-
-        console.log(req.user.id, 'usuario');
         try {
             const note = new Note()
             note.task = req.task.id;
@@ -20,13 +18,14 @@ export class NoteController {
             req.task.notes.push(note.id)
 
             await Promise.allSettled([note.save(), req.task.save()])
-            return res.status(200).json(note);
+            return res.status(200).send("Note create success");
 
         } catch (error: unknown) {
 
             return res.status(500).json(error)
         }
-    }
+    };
+
     static getNotesByTask = async (req: Request, res: Response) => {
 
         try {
@@ -39,6 +38,7 @@ export class NoteController {
             return res.status(500).json(error)
         }
     };
+
     static deleteNoteById = async (req: Request<NoteParams>, res: Response) => {
         const { noteId } = req.params
 
