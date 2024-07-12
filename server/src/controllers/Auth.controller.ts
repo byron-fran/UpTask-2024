@@ -208,7 +208,7 @@ export class AuthContoller {
             return res.status(200).send("change password success")
             
         } catch (error: unknown) {
-            return res.status(500).json({ error })
+            return res.status(500).json({ errors : error })
         }  
         
 
@@ -217,4 +217,21 @@ export class AuthContoller {
         return res.status(200).json(req.user)
     }
 
+    public static updateProfile = async (req: Request, res: Response) => {
+        const {email, name} = req.body
+
+        try {
+            const userExists = await User.findOne({email})
+            if(userExists && userExists.id.toString() !== req.user.id.toString()){
+                return res.status(409).json({errors : "User already exists"})
+            }
+            req.user.email = email
+            req.user.name = name
+            await req.user.save()
+            return res.status(200).send('Update profile success')
+            
+        } catch (error : unknown) {
+            return res.status(500).json({ errors : error })
+        }
+    };
 }

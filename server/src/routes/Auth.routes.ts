@@ -50,6 +50,14 @@ router.post('/new-password/:token',
     handleInputErros,
     AuthContoller.changeNewPassword);
 
-router.get('/user-profile', authenticate,  AuthContoller.getUser)    
+router.get('/user-profile', authenticate, AuthContoller.getUser)
+
+// Profile routes
+router.put('/profile',
+    authenticate,
+    body('name').notEmpty().withMessage("name is required"),
+    body('email').isEmail().withMessage('must be email'),
+    handleInputErros,
+    AuthContoller.updateProfile)
 
 export default router
