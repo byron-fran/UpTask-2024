@@ -6,7 +6,7 @@ const AuthSchema = z.object({
     email: z.string().email(),
     password: z.string(),
     password_confirmation: z.string(),
-
+    current_password : z.string()
 
 })
 
@@ -16,6 +16,7 @@ export type UserRegitserForm = Pick<Auth, 'name' | 'email' | 'password' | 'passw
 export type RequestConfirmationCodeForm = Pick<Auth, 'email'>
 export type ForgotPasswordForm = Pick<Auth, 'email'>
 export type NewPasswordForm = Pick<Auth, 'password' | 'password_confirmation'>
+export type UpdatePasswordProfileForm = Pick<Auth, 'password' | 'current_password' | 'password_confirmation'>
 
 export const userSchema = AuthSchema.pick({
     name: true,
