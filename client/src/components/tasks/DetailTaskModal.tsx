@@ -9,6 +9,7 @@ import { statusTranslations } from '@/locals/locals';
 import { TaskStatus } from '@/types/index';
 import NotesPanel from '../notes/NotesPanel';
 
+
 export default function TaskModalDetails() {
 
     const location = useLocation();
@@ -47,6 +48,7 @@ export default function TaskModalDetails() {
     };
 
 
+ 
     if (data) return (
         <>
             <Transition appear show={show} as={Fragment}>
@@ -110,8 +112,8 @@ export default function TaskModalDetails() {
                                             })}
                                         </select>
                                     </div>
-                                    
-                                    <NotesPanel />
+                                
+                                    <NotesPanel notes={data.notes} />
                                 </DialogPanel>
                             </TransitionChild>
                         </div>

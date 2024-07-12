@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form'
 import { NoteFormData } from '@/types/index';
 import ErrorMessage from '../ErrorMessage';
 import { createNote } from '@/api/NoteApi';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useParams, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -19,8 +19,8 @@ const AddNoteForm = () => {
 
     const taskId = url.get('taskView')!
     const projectId = params.id!;
-    
-    
+
+    const queryClient = useQueryClient()
     const { mutate } = useMutation({
         mutationFn: createNote,
 
@@ -28,12 +28,13 @@ const AddNoteForm = () => {
             toast.error(error.message)
         },
         onSuccess: (data) => {
-            toast.success(data)
+            toast.success(data);
+            queryClient.invalidateQueries({ queryKey: ['task', taskId] })
         }
     });
-    
+
     const handleAddnote = (formData: NoteFormData) => {
-        
+
         mutate({ formData, projectId, taskId })
         reset()
     }

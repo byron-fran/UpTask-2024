@@ -9,6 +9,7 @@ type taskProps = {
     status: task['status']
 
 };
+
 export const createTask = async ({ formData, id }: Pick<taskProps, 'formData' | 'id'>) => {
 
     try {
@@ -18,7 +19,7 @@ export const createTask = async ({ formData, id }: Pick<taskProps, 'formData' | 
     }
     catch (error: unknown) {
         if (isAxiosError(error)) {
-            console.log(error.response)
+        
             throw new Error(error.response?.data.error)
         }
 
@@ -37,7 +38,7 @@ export const getTaskById = async ({ projectId, id }: Pick<taskProps, 'projectId'
     }
     catch (error: unknown) {
         if (isAxiosError(error)) {
-            console.log(error.response)
+           
             throw new Error(error.response?.data.error)
         }
 
@@ -54,7 +55,7 @@ export const updateTaskById = async ({ formData, id, projectId }: Pick<taskProps
 
     } catch (error: unknown) {
         if (isAxiosError(error)) {
-            console.log(error.response)
+        
             throw new Error(error.response?.data.error)
         }
     }
@@ -81,7 +82,7 @@ export const changeStatus = async ({ id, projectId, status }: Pick<taskProps, 'i
 
     } catch (error: unknown) {
         if (isAxiosError(error)) {
-            console.log(error.response)
+
             throw new Error(error.response?.data.error)
         }
     }
