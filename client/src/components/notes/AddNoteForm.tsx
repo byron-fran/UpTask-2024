@@ -1,6 +1,10 @@
 import { useForm } from 'react-hook-form'
 import { NoteFormData } from '@/types/index';
 import ErrorMessage from '../ErrorMessage';
+import { createNote } from '@/api/NoteApi';
+import { useMutation } from '@tanstack/react-query';
+import { useParams, useLocation } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 
 const AddNoteForm = () => {
@@ -9,8 +13,29 @@ const AddNoteForm = () => {
     }
     const { handleSubmit, reset, formState: { errors }, register } = useForm({ defaultValues: initialValues });
 
+    const params = useParams();
+    const location = useLocation();
+    const url = new URLSearchParams(location.search)
+
+    const taskId = url.get('taskView')!
+    const projectId = params.id!;
+    
+    
+    const { mutate } = useMutation({
+        mutationFn: createNote,
+
+        onError: (error) => {
+            toast.error(error.message)
+        },
+        onSuccess: (data) => {
+            toast.success(data)
+        }
+    });
+    
     const handleAddnote = (formData: NoteFormData) => {
-        console.log(formData)
+        
+        mutate({ formData, projectId, taskId })
+        reset()
     }
     return (
         <form
@@ -26,12 +51,12 @@ const AddNoteForm = () => {
                     </ErrorMessage>
                 )}
                 <label htmlFor="content" className="text-left">Note</label>
-                <input 
-                    className="w-full focus:outline-none border border-gray-300 p-3" 
-                    type="text" 
-                    placeholder="Create a note" 
+                <input
+                    className="w-full focus:outline-none border border-gray-300 p-3"
+                    type="text"
+                    placeholder="Create a note"
                     id="content"
-                    {...register('content', {required : true})} />
+                    {...register('content', { required: true })} />
             </div>
             <input className="w-full bg-fuchsia-600 p-3 hover:bg-fuchsia-700 text-white font-bold text-center" type="submit" value='create note' />
         </form>
