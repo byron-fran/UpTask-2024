@@ -49,7 +49,7 @@ export class AuthContoller {
         try {
 
             const tokenExists = await Token.findOne({ token });
-            
+
             if (!tokenExists) {
                 const error = new Error("token invalidate")
                 return res.status(401).json({ errors: error.message })
@@ -94,7 +94,7 @@ export class AuthContoller {
 
                 return res.status(401).json({ errors: "Password incorrect" });
             };
-            const token = generateJWT({id : user.id})
+            const token = generateJWT({ id: user.id })
             return res.status(200).send(token)
         }
         catch (error: unknown) {
@@ -148,7 +148,7 @@ export class AuthContoller {
 
             };
 
-       
+
             const token = new Token()
             token.token = generateToken()
             token.user = user.id;
@@ -161,7 +161,7 @@ export class AuthContoller {
                     name: user.name
                 });
 
-            
+
             return res.status(200).send("new token created, check your email")
 
         } catch (error: unknown) {
@@ -172,7 +172,7 @@ export class AuthContoller {
 
     public static tokenPasswordConfirmation = async (req: Request, res: Response) => {
         const { token } = req.body;
-    
+
         try {
 
             const tokenExists = await Token.findOne({ token });
@@ -181,7 +181,7 @@ export class AuthContoller {
                 const error = new Error("token invalidate")
                 return res.status(401).json({ errors: error.message })
             };
-         
+
 
             return res.status(200).send("now, create new password")
 
@@ -191,11 +191,11 @@ export class AuthContoller {
     };
 
     public static changeNewPassword = async (req: Request, res: Response) => {
-        const {token} = req.params;
-        console.log({token})
+        const { token } = req.params;
+        console.log({ token })
         try {
             const tokenExists = await Token.findOne({ token });
-            
+
             if (!tokenExists) {
                 const error = new Error("token invalidate")
                 return res.status(401).json({ errors: error.message })
@@ -206,11 +206,11 @@ export class AuthContoller {
 
             await Promise.allSettled([user.save(), tokenExists.deleteOne()]);
             return res.status(200).send("change password success")
-            
+
         } catch (error: unknown) {
-            return res.status(500).json({ errors : error })
-        }  
-        
+            return res.status(500).json({ errors: error })
+        }
+
 
     };
     public static getUser = async (req: Request, res: Response) => {
@@ -218,20 +218,42 @@ export class AuthContoller {
     }
 
     public static updateProfile = async (req: Request, res: Response) => {
-        const {email, name} = req.body
+        const { email, name } = req.body
 
         try {
-            const userExists = await User.findOne({email})
-            if(userExists && userExists.id.toString() !== req.user.id.toString()){
-                return res.status(409).json({errors : "User already exists"})
+            const userExists = await User.findOne({ email })
+            if (userExists && userExists.id.toString() !== req.user.id.toString()) {
+                return res.status(409).json({ errors: "User already exists" })
             }
             req.user.email = email
             req.user.name = name
             await req.user.save()
             return res.status(200).send('Update profile success')
-            
-        } catch (error : unknown) {
-            return res.status(500).json({ errors : error })
+
+        } catch (error: unknown) {
+            return res.status(500).json({ errors: error })
+        }
+    };
+
+    public static updatePassword = async (req: Request, res: Response) => {
+        const { current_password, new_password } = req.body
+
+        try {
+            const user = await User.findById(req.user.id)
+            const isPasswordCorrect = await checkPassword(current_password, user.password)
+            console.log(isPasswordCorrect)
+            if (!isPasswordCorrect) {
+
+                return res.status(401).json({ errors: "Password incorrect" })
+            }
+            const salt = await bcrypt.genSalt(10)
+            user.password = await bcrypt.hash(new_password, salt);
+            await user.save();
+
+            return res.status(200).send('password update success')
+
+        } catch (error: unknown) {
+            return res.status(500).json({ errors: error })
         }
     };
 }

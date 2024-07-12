@@ -60,4 +60,18 @@ router.put('/profile',
     handleInputErros,
     AuthContoller.updateProfile)
 
+
+router.post('/update-password',
+    authenticate,
+    body('current_password').isLength({ min: 8 }).withMessage("password is required"),
+    body('new_password').isLength({ min: 8 }).withMessage("password is required"),
+    body('password_confirmation').custom((value, { req }) => {
+        if (value !== req.body.new_password) {
+            throw new Error("password not match")
+        }
+        return true
+    }),
+    handleInputErros,
+    AuthContoller.updatePassword)
+
 export default router
