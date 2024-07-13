@@ -236,22 +236,40 @@ export class AuthContoller {
     };
 
     public static updatePassword = async (req: Request, res: Response) => {
-        const { current_password, new_password } = req.body
+        const { current_password, password } = req.body
 
         try {
             const user = await User.findById(req.user.id)
             const isPasswordCorrect = await checkPassword(current_password, user.password)
-            console.log(isPasswordCorrect)
+
             if (!isPasswordCorrect) {
 
                 return res.status(401).json({ errors: "Password incorrect" })
             }
             const salt = await bcrypt.genSalt(10)
-            user.password = await bcrypt.hash(new_password, salt);
+            user.password = await bcrypt.hash(password, salt);
             await user.save();
 
             return res.status(200).send('password update success')
 
+        } catch (error: unknown) {
+            return res.status(500).json({ errors: error })
+        }
+    };
+
+    public static checkPassword = async (req: Request, res: Response) => {
+
+        const { password } = req.body
+        try {
+
+            const user = await User.findById(req.user.id)
+            const isPasswordCorrect = await checkPassword(password, user.password)
+
+            if (!isPasswordCorrect) {
+
+                return res.status(401).json({ errors: "Password incorrect" })
+            }
+            return res.status(200).send('password correct')
         } catch (error: unknown) {
             return res.status(500).json({ errors: error })
         }

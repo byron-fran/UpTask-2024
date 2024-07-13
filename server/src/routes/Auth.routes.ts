@@ -64,9 +64,9 @@ router.put('/profile',
 router.post('/update-password',
     authenticate,
     body('current_password').isLength({ min: 8 }).withMessage("password is required"),
-    body('new_password').isLength({ min: 8 }).withMessage("password is required"),
+    body('password').isLength({ min: 8 }).withMessage("password is required"),
     body('password_confirmation').custom((value, { req }) => {
-        if (value !== req.body.new_password) {
+        if (value !== req.body.password) {
             throw new Error("password not match")
         }
         return true
@@ -74,4 +74,9 @@ router.post('/update-password',
     handleInputErros,
     AuthContoller.updatePassword)
 
+router.post('/check-password',
+        authenticate,
+        body('password').isLength({ min: 8 }).withMessage("password is required"),  
+        handleInputErros,
+        AuthContoller.checkPassword)
 export default router
