@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@chakra-ui/pin-input": "^2.1.0",
+    "@dnd-kit/core": "^6.1.0",
     "@headlessui/react": "^2.0.4",
     "@heroicons/react": "^2.1.4",
     "@tailwindcss/forms": "^0.5.7",
@@ -19,8 +20,8 @@
     "axios": "^1.7.2",
     "dotenv": "^16.4.5",
     "jsonwebtoken": "^9.0.2",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-hook-form": "^7.52.0",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.23.1",

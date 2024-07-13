@@ -31,7 +31,7 @@ export default function TaskModalDetails() {
         mutationFn: changeStatus,
         onSuccess: () => {
             toast.success('Update success'),
-                queryClient.invalidateQueries({ queryKey: ['update_project', id] })
+            queryClient.invalidateQueries({ queryKey: ['update_project', id] })
             queryClient.invalidateQueries({ queryKey: ['task', taskId] })
         },
         onError: () => {
@@ -48,7 +48,7 @@ export default function TaskModalDetails() {
     };
 
 
- 
+
     if (data) return (
         <>
             <Transition appear show={show} as={Fragment}>
@@ -112,7 +112,7 @@ export default function TaskModalDetails() {
                                             })}
                                         </select>
                                     </div>
-                                
+
                                     <NotesPanel notes={data.notes} />
                                 </DialogPanel>
                             </TransitionChild>

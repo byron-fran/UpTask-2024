@@ -6,13 +6,12 @@ import { Fragment } from "react/jsx-runtime"
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { deleteTaskById } from "@/api/TaskApi"
 import { toast } from "react-toastify"
-
+import { useDraggable } from '@dnd-kit/core'
 
 interface TaskCardProps {
     task: task,
     canEdit: boolean
-}
-
+};
 
 const TaskCard = ({ task, canEdit }: TaskCardProps) => {
     const navigate = useNavigate();
@@ -21,7 +20,9 @@ const TaskCard = ({ task, canEdit }: TaskCardProps) => {
     const params = useParams()
     const projectId = params.id!
     const queryClient = useQueryClient();
-
+    const { attributes, listeners, setNodeRef, transform } = useDraggable({
+        id: task._id
+    })
     const { mutate } = useMutation({
         mutationFn: deleteTaskById,
         onError: (data) => {
@@ -35,15 +36,25 @@ const TaskCard = ({ task, canEdit }: TaskCardProps) => {
 
     });
 
+    const styles = transform ? {
+        transform : `translate3d(${transform.x}px, ${transform.y}px, 0)`
+    } : undefined;
+   
     return (
         <li className="p-5 bg-white border border-slate-300 flex justify-between gap-3 ">
-            <div className="min-w-0 flex flex-col gap-y-4 ">
+            <div
+                {...listeners}
+                {...attributes}
+                ref={setNodeRef}
+                className="min-w-0 flex flex-col gap-y-4 "
+                style={styles}>
                 <button
                     type="button"
                     className="text-xl font-bold text-slate-600 text-left"
                 >
                     {task.name}
                 </button>
+
                 <p className="text-slate-500"> {task.description}</p>
 
             </div>
