@@ -52,13 +52,13 @@ export default function NewPasswordForm({ token }: Props) {
 
                     <input
                         type="password"
-                        placeholder="Password de Registro"
+                        placeholder="Password"
                         className="w-full p-3  border-gray-300 border"
                         {...register("password", {
-                            required: "El Password es obligatorio",
+                            required: "Password is required",
                             minLength: {
                                 value: 8,
-                                message: 'El Password debe ser mínimo de 8 caracteres'
+                                message: 'Password must be more than 8 characters'
                             }
                         })}
                     />
@@ -70,12 +70,12 @@ export default function NewPasswordForm({ token }: Props) {
                 <div className="flex flex-col gap-5">
                     <label
                         className="font-normal text-2xl"
-                    >Repetir Password</label>
+                    >Repeat password</label>
 
                     <input
                         id="password_confirmation"
                         type="password"
-                        placeholder="Repite Password de Registro"
+                        placeholder="Password"
                         className="w-full p-3  border-gray-300 border"
                         {...register("password_confirmation", {
                             required: "Repetir Password es obligatorio",

@@ -79,7 +79,7 @@ export default function AddTaskModal() {
                                         as="h3"
                                         className="font-black text-4xl  my-5"
                                     >
-                                        Nueva Tarea
+                                        New Task
                                     </Dialog.Title>
 
                                     <form className='mt-10 py-10 shadow-lg' onSubmit={handleSubmit(onSubmit)}>

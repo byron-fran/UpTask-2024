@@ -54,7 +54,7 @@ const ProyectTeamView = () => {
                 </Link>
             </nav>
             <AddMemberModal/>
-            <h2 className="text-5xl font-black my-10">Miembros actuales</h2>
+            <h2 className="text-5xl font-black my-10">Current members</h2>
             {data?.length ? (
                 <ul role="list" className="divide-y divide-gray-100 border border-gray-100 mt-10 bg-white shadow-lg">
                     {data?.map((member) => (
@@ -102,7 +102,7 @@ const ProyectTeamView = () => {
                     ))}
                 </ul>
             ) : (
-                <p className='text-center py-20'>No hay miembros en este equipo</p>
+                <p className='text-center py-20'>No current members</p>
             )}
         </>
     )

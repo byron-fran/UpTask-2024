@@ -43,17 +43,17 @@ export default function AddMemberForm() {
                     <label
                         className="font-normal text-2xl"
                         htmlFor="name"
-                    >E-mail de Usuario</label>
+                    >Email user</label>
                     <input
                         id="name"
                         type="text"
-                        placeholder="E-mail del usuario a Agregar"
+                        placeholder="Email to add"
                         className="w-full p-3  border-gray-300 border"
                         {...register("email", {
-                            required: "El Email es obligatorio",
+                            required: "Email is required",
                             pattern: {
                                 value: /\S+@\S+\.\S+/,
-                                message: "E-mail no válido",
+                                message: "invalide email",
                             },
                         })}
                     />
@@ -65,7 +65,7 @@ export default function AddMemberForm() {
                 <input
                     type="submit"
                     className=" bg-fuchsia-600 hover:bg-fuchsia-700 w-full p-3  text-white font-black  text-xl cursor-pointer"
-                    value='Buscar Usuario'
+                    value='Search user'
                 />
             </form>
             <div className="mt-10">

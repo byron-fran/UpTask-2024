@@ -48,7 +48,7 @@ const SearchResults: FC<Props> = ({ user, reset }) => {
                 <p className="font-bold">{user.name}</p>
                 <button 
                     onClick={handleMemberToTeam}
-                    className="text-purple-600 hover:bg-purple-100 p-2 rounded-md">
+                    className="bg-purple-400 hover:bg-purple-500 px-10 py-2 rounded-md text-white text-xl font-bold cursor-pointer transition-colors">
                     Add member
                 </button>
             </div>

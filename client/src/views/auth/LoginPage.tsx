@@ -45,13 +45,13 @@ const LoginPage = () => {
                     <input
                         id="email"
                         type="email"
-                        placeholder="Email de Registro"
+                        placeholder="Email"
                         className="w-full p-3  border-gray-300 border"
                         {...register("email", {
-                            required: "El Email es obligatorio",
+                            required: "Email is required",
                             pattern: {
                                 value: /\S+@\S+\.\S+/,
-                                message: "E-mail no válido",
+                                message: "Email invalidate",
                             },
                         })}
                     />
@@ -67,10 +67,10 @@ const LoginPage = () => {
 
                     <input
                         type="password"
-                        placeholder="Password de Registro"
+                        placeholder="Password"
                         className="w-full p-3  border-gray-300 border"
                         {...register("password", {
-                            required: "El Password es obligatorio",
+                            required: "Password is required",
                         })}
                     />
                     {errors.password && (
@@ -80,7 +80,7 @@ const LoginPage = () => {
 
                 <input
                     type="submit"
-                    value='Iniciar Sesión'
+                    value='Login'
                     className="bg-fuchsia-600 hover:bg-fuchsia-700 w-full p-3  text-white font-black  text-xl cursor-pointer"
                 />
             </form>

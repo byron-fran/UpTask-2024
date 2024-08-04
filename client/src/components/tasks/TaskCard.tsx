@@ -73,7 +73,7 @@ const TaskCard = ({ task, canEdit }: TaskCardProps) => {
                                 <button
                                     onClick={() => navigate(location.pathname + `?taskView=${task._id}`)}
                                     type='button' className='block px-3 py-1 text-sm leading-6 text-gray-900'>
-                                    Ver Tarea
+                                    See task
                                 </button>
                             </MenuItem>
                             {canEdit && (
@@ -82,7 +82,7 @@ const TaskCard = ({ task, canEdit }: TaskCardProps) => {
                                         <button
                                             onClick={() => navigate(location.pathname + `?taskEdit=${task._id}`)}
                                             type='button' className='block px-3 py-1 text-sm leading-6 text-gray-900'>
-                                            Editar Tarea
+                                            Update task
                                         </button>
                                     </MenuItem>
 

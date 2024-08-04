@@ -43,11 +43,11 @@ export default function AddMemberModal() {
                                     <Dialog.Title
                                         as="h3"
                                         className="font-black text-4xl  my-5"
-                                    >
-                                        Agregar Integrante al equipo
+                                    >                
+                                        Add member to team
                                     </Dialog.Title>
-                                    <p className="text-xl font-bold">Busca el nuevo integrante por email {''}
-                                        <span className="text-fuchsia-600">para agregarlo al proyecto</span>
+                                    <p className="text-xl font-bold">Search new member by email {''}
+                                        <span className="text-fuchsia-600">to add to the new project</span>
                                     </p>
                                     <AddMemberForm/>
                                     
