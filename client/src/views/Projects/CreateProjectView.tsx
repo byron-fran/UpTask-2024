@@ -23,7 +23,7 @@ const CreateProjectView = () => {
         onError: () => {
 
         },
-        onSuccess: (data) => {
+        onSuccess: () => {
             toast.success("Project crated success")
             reset()
 

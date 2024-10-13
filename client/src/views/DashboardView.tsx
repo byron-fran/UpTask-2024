@@ -7,6 +7,7 @@ import { Menu, MenuButton, MenuItem, MenuItems, Transition } from '@headlessui/r
 import { useAuth } from "@/hooks/useAuth"
 import DeleteProjectModal from "@/components/Projects/DeleteProjectModal"
 import { useNavigate } from "react-router-dom"
+import { LoadingView } from "@/components/loading/Loading"
 
 const DashboardView = () => {
   const { data: user, isLoading: authLoading } = useAuth();
@@ -17,7 +18,7 @@ const DashboardView = () => {
 
   })
 
-  if (isLoading && authLoading) return '..Loading'
+  if (isLoading && authLoading) return <LoadingView/>
 
   if (data && user) {
 

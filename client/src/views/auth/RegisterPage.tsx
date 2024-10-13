@@ -1,4 +1,3 @@
-import React from 'react'
 import { UserRegitserForm } from '@/types/index'
 import ErrorMessage from '@/components/ErrorMessage'
 import { useForm } from 'react-hook-form'

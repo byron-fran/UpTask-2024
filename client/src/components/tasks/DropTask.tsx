@@ -1,4 +1,3 @@
-import { TaskStatus } from '@/types/index'
 import { useDroppable } from '@dnd-kit/core'
 import { FC } from 'react'
 

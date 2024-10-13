@@ -4,12 +4,13 @@ import { NavMenu } from '@/components/NavMenu'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { useAuth } from '@/hooks/useAuth'
+import { LoadingView } from '@/components/loading/Loading'
 
 const AppLayout = () => {
 
   const { data, isError, isLoading } = useAuth();
 
-  if (isLoading) return 'loading...';
+  if (isLoading) return <LoadingView/>
 
   if (isError) {
     return <Navigate to={'/auth/login'} />

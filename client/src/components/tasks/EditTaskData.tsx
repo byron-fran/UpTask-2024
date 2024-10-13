@@ -13,7 +13,7 @@ const EditTaskData = () => {
     const params = useParams()
     const projectId = params.id!
 
-    const { data, isLoading } = useQuery({
+    const { data, } = useQuery({
 
         queryFn: () => getTaskById({ projectId, id: taskId }),
         queryKey: ['task'],
